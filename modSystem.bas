@@ -111,12 +111,12 @@ Dim objNetwork As IWshRuntimeLibrary.WshNetwork
     Set objNetwork = CreateObject("WScript.Network")
   End If
   If objNetwork Is Nothing Then GoTo errHandler:
-  logger "текущий пользователь: " & objNetwork.username
+  logger "current user: " & objNetwork.username
   getUserLogin = objNetwork.username
   Set objNetwork = Nothing
   Exit Function
 errHandler:
-  handleError "[getUserLogin], не удалось опознать текущего пользователя", True
+  handleError "[getUserLogin]", True
 End Function
 
 '----------------------------------------------
