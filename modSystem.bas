@@ -146,18 +146,18 @@ Sub handleError(Optional errLocation As String = "", Optional showUI As Boolean 
   Dim errorMessage, msg_answ As String
   errorMessage = "Error in " & errLocation & ", {" & Err.Source & "} : vba error " & Err.Number & vbCrLf & Err.Description
   If Len(log_file_full) Then
-    logger ----------------------------------------
+    logger "----------------------------------------"
     logger errorMessage
-    logger ----------------------------------------
+    logger "----------------------------------------"
   Else
-    Debug.Print ----------------------------------------
+    Debug.Print "----------------------------------------"
     Debug.Print ">> " & errorMessage
-    Debug.Print ----------------------------------------
+    Debug.Print "----------------------------------------"
   End If
   If showUI Then
-    msg_answ = MsgBox errorMessage & vbCrLf _
+    msg_answ = MsgBox(errorMessage & vbCrLf _
       & "If the error occurs next time contact with developers" & vbCrLf _
-      & "do it now?", vbCritical, PROJ_NAME & " error"
+      & "do it now?", vbCritical, PROJ_NAME & " error")
     Select Case msg_answ
       Case vbYes
         ThisWorkbook.FollowHyperlink Address:="https://github.com/mcgr0g"
@@ -229,13 +229,4 @@ Sub getLogFile()
   Dim msg_answ As Integer
   msg_answ = MsgBox(log_file_full & vbCrLf & "open?", vbQuestion + vbYesNo, PROJ_NAME & " log file")
   If msg_answ = vbYellow Then ThisWorkbook.FollowHyperlink Address:=log_file_full
-End Sub
-
-Sub sendLogFile2admin()
-  Dim msg_answ As Integer
-  init
-  msg_answ = MsgBox(log_file_full & vbCrLf & "send?", vbQuestion + vbYesNo, PROJ_NAME & " log file")
-  If msg_answ = vbYes Then
-    mailAdmin subj:=PROJ_NAME & " log", mesg:="very interesting", toAdmin:=True
-  End If
 End Sub
