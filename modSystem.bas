@@ -19,20 +19,18 @@ Public log_dir, log_file_full As String
 ' procedure for Workbook_Open()
 '------------------------------------------------------------------------------
 Sub autoOpen()
-  Dim fso As New FileSystemObject
   modeScripting
-  If fso.GetExtensionName(ActiveWorkbook.name) <> "xlsm" Then
-    MsgBox "This workbook have incorrect format, need to be xlsm", vbOKOnly, PROJ_NAME & " error"
-    modeHuman
-    ActiveWorkbook.Close False
-    End
-  End If
+  'checkCurExt
   removeBrockenRefs ' https://github.com/mcgr0g/vbaCore/blob/master/modReference.bas
   log_file_full = loggerInit(getTempFolder(PROJ_NAME))
   init
   installRefsFromList ' https://github.com/mcgr0g/vbaCore/blob/master/modReference.bas
-  'blabla  
+  createMenu  
   modeHuman
+End Sub
+
+Sub beforeClose()
+  deleteMenu
 End Sub
 
 '------------------------------------------------------------------------------
@@ -69,6 +67,16 @@ Sub modeHuman()
   Application.ScreenUpdating = True
   Application.EnableEvents = True
   Application.Calculation = xlCalculationAutomatic
+End Sub
+
+Private Sub checkCurExt()
+Dim fso As New FileSystemObject
+  If fso.GetExtensionName(ActiveWorkbook.Name) <> "xlsm" Then
+    MsgBox "This workbook have incorrect format, need to be xlsm", vbOKOnly, PROJ_NAME & " error"
+    modeHuman
+    ActiveWorkbook.Close False
+    End
+  End If
 End Sub
 
 '------------------------------------------------------------------------------
