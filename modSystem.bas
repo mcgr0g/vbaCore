@@ -7,7 +7,6 @@ Option Explicit
 '    {F935DC20-1CF0-11D0-ADB9-00C04FD58A0B} | 1 | 0 | IWshRuntimeLibrary
 '==============================================================================
 ' declare for system options
-Public Const PROJ_NAME = "projName"
 Public initReady As Boolean
 Public usr_name As String
 '==============================================================================
