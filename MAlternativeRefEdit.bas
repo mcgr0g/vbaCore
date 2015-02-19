@@ -1,5 +1,6 @@
 Attribute VB_Name = "MAlternativeRefEdit"
 Option Explicit
+' based on http://peltiertech.com/refedit-control-alternative/
 ''============================================================================
 Sub ShowDialog(tCaption As String)
   Dim frmAlternativeRefEdit As FAlternativeRefEdit
