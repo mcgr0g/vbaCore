@@ -5,10 +5,12 @@ Public Const MENU_BAR = PROJ_NAME & " menu"
 Sub createMenu()
 Dim cmBar As CommandBar
 Dim butn1, butn2 As CommandBarButton
-' Создание новой панели инструментов с именем МояПанельИнструментов, которая будет удаляться при закрытии приложения
+  ' panel creation
   Set cmBar = Application.CommandBars.Add(Name:=MENU_BAR, Position:=msoBarTop, MenuBar:=False, Temporary:=True)
-  Set butn2 = addMenuItem(cmBar, "RunMyMacro1", "Тест", 1162)
-  Set butn2 = addMenuItem(cmBar, "RunMyMacro1", "Тест234", 1398)
+  ' button creation
+  Set butn1 = addMenuItem(cmBar, "transformPersentFormat", OPTION1, 1162)
+  Set butn2 = addMenuItem(cmBar, "RunMyMacro1", "Òåñò", 1398)
+  Set butn2 = addMenuItem(cmBar, "RunMyMacro1", "Òåñò234", 1397)
   cmBar.Visible = True
 End Sub
 
