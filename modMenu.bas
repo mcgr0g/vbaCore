@@ -9,8 +9,9 @@ Dim butn1, butn2 As CommandBarButton
   Set cmBar = Application.CommandBars.Add(Name:=MENU_BAR, Position:=msoBarTop, MenuBar:=False, Temporary:=True)
   ' button creation
   Set butn1 = addMenuItem(cmBar, "transformPersentFormat", OPTION1, 1162)
-  Set butn2 = addMenuItem(cmBar, "RunMyMacro1", "Òåñò", 1398)
-  Set butn2 = addMenuItem(cmBar, "RunMyMacro1", "Òåñò234", 1397)
+  Set butn2 = addMenuItem(cmBar, "setContinuityTo1dRange", OPTION2, 1162)
+  Set butn2 = addMenuItem(cmBar, "RunMyMacro1", "Тест", 1398)
+  Set butn2 = addMenuItem(cmBar, "RunMyMacro1", "Тест234", 1397)
   cmBar.Visible = True
 End Sub
 
