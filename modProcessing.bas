@@ -49,6 +49,7 @@ Dim iCell
 Dim startPoint, secondPoint, startRng, destRng, samlpeRng As Range
 Dim workWithRow As Boolean ' true-работаем со строками, иначе со столбцами.
 Dim blankStartRow, blankStartCol, blankEndRow, blankEndCol, i, counterttl As Integer
+Dim sampl, dest, samplVal, destVal As Variant
   logger "starting setContinuity"
   'On Error GoTo errHandler:
   modeScripting
@@ -94,23 +95,43 @@ Dim blankStartRow, blankStartCol, blankEndRow, blankEndCol, i, counterttl As Int
     startRng.Cells(1, 2).Value = Cells(blankStartRow, blankStartCol + 1).Value
     startRng.Select
     Selection.AutoFill Destination:=destRng, Type:=xlFillDefault
+    ' задаем размерность цикла
+    counterttl = samlpeRng.Columns.Count
+    i = 1
     ' сверяем значения болванки с образцом
-    counterttl = samlpeRng.Columns.Count + 1
-    For i = 1 To counterttl + 2 ' не спрашивайте, почему так
-      If samlpeRng.Cells(1, i).Value <> destRng.Cells(1, i).Value Then
+    Do Until i > counterttl Or i > 100
+      sampl = samlpeRng(1, i).Value
+      dest = destRng(1, i).Value
+      If IsNumeric(sampl) And IsNumeric(dest) Then
+        samplVal = Val(sampl)
+        destVal = Val(dest)
+      Else
+        If IsDate(sampl) And IsDate(dest) Then
+          samplVal = CDate(sampl)
+          destVal = CDate(dest)
+        Else
+          MsgBox "неизвестный формат"
+          End Sub
+        End If
+      End If
+      If samplVal <> destVal Then
         Debug.Print "нашел косяк " & samlpeRng.Cells(1, i).Address
         Columns(blankStartCol + i - 1).Select
         Selection.Insert Shift:=xlToRight, CopyOrigin:=xlFormatFromLeftOrAbove
         blankEndCol = blankEndCol + 1
         counterttl = counterttl + 1
         'расширили массив
+        Set samlpeRng = Nothing
+        Set destRng = Nothing
         Set samlpeRng = Range(Cells(blankStartRow, blankStartCol), Cells(blankEndRow, blankEndCol))
         Set destRng = Range(Cells(blankStartRow - 1, blankStartCol), Cells(blankStartRow - 1, blankEndCol))
         startRng.Select
         Selection.AutoFill Destination:=destRng, Type:=xlFillDefault
-        samlpeRng.Cells(1, i).Value = destRng.Cells(1, i).Value
+        samlpeRng(1, i).Value = destRng(1, i).Value
       End If
-    Next i
+    'Next i
+    i = i + 1
+    Loop
     Rows(blankStartRow - 1).Select
     Selection.Delete Shift:=xlUp
   Else
@@ -130,9 +151,25 @@ Dim blankStartRow, blankStartCol, blankEndRow, blankEndCol, i, counterttl As Int
     startRng.Select
     Selection.AutoFill Destination:=destRng, Type:=xlFillDefault
     ' сверяем значения болванки с образцом
-    counterttl = samlpeRng.Rows.Count + 1
-    For i = 1 To counterttl + 2 ' не спрашивайте, почему так
-      If samlpeRng.Cells(i, 1).Value <> destRng.Cells(i, 1).Value Then
+    counterttl = samlpeRng.Rows.Count
+    i = 1
+    Do Until i > counterttl Or i > 100
+    'For i  = 1 To counterttl + 2 ' не спрашивайте, почему так
+      sampl = samlpeRng(i, 1).Value
+      dest = destRng(i, 1).Value
+      If IsNumeric(sampl) And IsNumeric(dest) Then
+        samplVal = Val(sampl)
+        destVal = Val(dest)
+      Else
+        If IsDate(sampl) And IsDate(dest) Then
+          samplVal = CDate(sampl)
+          destVal = CDate(dest)
+        Else
+          MsgBox "неизвестный формат"
+          End Sub
+        End If
+      End If
+      If samplVal <> destVal Then
         Debug.Print "нашел косяк " & samlpeRng.Cells(i, 1).Address
         Rows(blankStartRow + i - 1).Select
         Selection.Insert Shift:=xlDown, CopyOrigin:=xlFormatFromLeftOrAbove
@@ -145,8 +182,9 @@ Dim blankStartRow, blankStartCol, blankEndRow, blankEndCol, i, counterttl As Int
         Selection.AutoFill Destination:=destRng, Type:=xlFillDefault
         samlpeRng.Cells(i, 1).Value = destRng.Cells(i, 1).Value
       End If
-    Next i
-    Rows(blankStartRow - 1).Select
+    i = i + 1
+    Loop
+    Columns(blankStartCol - 1).Select
     Selection.Delete Shift:=xlToLeft
   End If
   
