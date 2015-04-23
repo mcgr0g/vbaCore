@@ -110,20 +110,22 @@ Function getUserLogin() As String
 On Error GoTo errHandler:
 Dim objNetwork As IWshRuntimeLibrary.WshNetwork
   Set objNetwork = New IWshRuntimeLibrary.WshNetwork
-  If objNetwork Is Nothing Then
-    Shell "Regsvr32 -s scrun.dll", vbHide
+  If objNetwork Is Nothing Then ' указываем библиотеки руками
+    'тихо в шеле запускаем регистрацию ScriptingRintime в реестре как компонет команды
+    Shell "Regsvr32 -s scrrun.dll", vbHide
     Application.Wait Now + (1# / 3600 / 24)
+    'тихо в шеле регистрируем еще Windows Scripting Host Object Model
     Shell "Regsvr32 -s wshom.ocx", vbHide
     Application.Wait Now + (1# / 3600 / 24)
     Set objNetwork = CreateObject("WScript.Network")
   End If
   If objNetwork Is Nothing Then GoTo errHandler:
-  logger "current user: " & objNetwork.username
+  logger "текущий пользователь: " & objNetwork.username
   getUserLogin = objNetwork.username
   Set objNetwork = Nothing
   Exit Function
 errHandler:
-  handleError "[getUserLogin]", True
+  handleError "[getUserLogin], не удалось опознать текущего пользователя", True
 End Function
 
 '----------------------------------------------
